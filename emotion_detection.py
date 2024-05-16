@@ -1,4 +1,5 @@
 import requests
+from json import loads
 
 
 def emotion_detector(text_to_analyse: str):
@@ -10,9 +11,42 @@ def emotion_detector(text_to_analyse: str):
     response = requests.post(url=url, json=data, headers=headers)
     return response.text
 
+# {
+#     "emotionPredictions": [
+#         {
+#             "emotion": {
+#                 "anger": 0.0075737,
+#                 "disgust": 0.0022305858,
+#                 "fear": 0.01696498,
+#                 "joy": 0.9918238,
+#                 "sadness": 0.018872749,
+#             },
+#             "target": "",
+#             "emotionMentions": [
+#                 {
+#                     "span": {"begin": 0, "end": 24, "text": "I love new technologies!"},
+#                     "emotion": {
+#                         "anger": 0.0075737,
+#                         "disgust": 0.0022305858,
+#                         "fear": 0.01696498,
+#                         "joy": 0.9918238,
+#                         "sadness": 0.018872749,
+#                     },
+#                 }
+#             ],
+#         }
+#     ],
+#     "producerId": {"name": "Ensemble Aggregated Emotion Workflow", "version": "0.0.1"},
+# }
+
+
+def format_output(response):
+    json_res = loads(response)
+    return json_res
+
 
 if __name__ == "__main__":
-    text = "I love new technologies!"
+    text = "I love all new AI technologies!"
 
     result = emotion_detector(text)
     print(result)
