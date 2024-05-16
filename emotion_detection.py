@@ -43,12 +43,18 @@ def emotion_detector(text_to_analyse: str):
 
 def format_output(response):
     json_res = loads(response)
-    emotions = json_res["emotionPredictions"][0]
-    return emotions
+    emotions = json_res["emotionPredictions"][0]["emotion"]
+    
+    emotions_list = []
+
+    for emotion in emotions.values():
+        emotions_list.append(emotion)
+
+    return max(emotions_list)
 
 
 if __name__ == "__main__":
     text = "I hate AI because it will replace real people jobs!"
 
     result = emotion_detector(text)
-    print(result)
+    print(format_output(result))
