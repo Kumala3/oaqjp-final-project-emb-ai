@@ -11,6 +11,7 @@ def emotion_detector(text_to_analyse: str):
     response = requests.post(url=url, json=data, headers=headers)
     return response.text
 
+
 # {
 #     "emotionPredictions": [
 #         {
@@ -42,11 +43,12 @@ def emotion_detector(text_to_analyse: str):
 
 def format_output(response):
     json_res = loads(response)
-    return json_res
+    emotions = json_res["emotionPredictions"][0]
+    return emotions
 
 
 if __name__ == "__main__":
-    text = "I love all new AI technologies!"
+    text = "I hate AI because it will replace real people jobs!"
 
     result = emotion_detector(text)
     print(result)
