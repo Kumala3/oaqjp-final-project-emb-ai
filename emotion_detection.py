@@ -12,49 +12,21 @@ def emotion_detector(text_to_analyse: str):
     return response.text
 
 
-# {
-#     "emotionPredictions": [
-#         {
-#             "emotion": {
-#                 "anger": 0.0075737,
-#                 "disgust": 0.0022305858,
-#                 "fear": 0.01696498,
-#                 "joy": 0.9918238,
-#                 "sadness": 0.018872749,
-#             },
-#             "target": "",
-#             "emotionMentions": [
-#                 {
-#                     "span": {"begin": 0, "end": 24, "text": "I love new technologies!"},
-#                     "emotion": {
-#                         "anger": 0.0075737,
-#                         "disgust": 0.0022305858,
-#                         "fear": 0.01696498,
-#                         "joy": 0.9918238,
-#                         "sadness": 0.018872749,
-#                     },
-#                 }
-#             ],
-#         }
-#     ],
-#     "producerId": {"name": "Ensemble Aggregated Emotion Workflow", "version": "0.0.1"},
-# }
-
-
 def format_output(response):
     json_res = loads(response)
     emotions = json_res["emotionPredictions"][0]["emotion"]
-    
-    emotions_list = []
 
-    for emotion in emotions.values():
-        emotions_list.append(emotion)
+    highest_emotion = next(
+        (emotion, score)
+        for emotion, score in emotions.items()
+        if score == max(emotions.values())
+    )
 
-    return max(emotions_list)
+    return highest_emotion[0]
 
 
 if __name__ == "__main__":
-    text = "I hate AI because it will replace real people jobs!"
+    text = "I'm confusing in this world!"
 
     result = emotion_detector(text)
     print(format_output(result))
