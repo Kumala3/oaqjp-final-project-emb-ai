@@ -24,10 +24,3 @@ def emotion_predictor(response):
 
     emotions["dominant_emotion"] = highest_emotion[0]
     return emotions
-
-
-if __name__ == "__main__":
-    text = "I am so happy I am doing this."
-
-    result = emotion_detector(text)
-    print(emotion_predictor(result))
