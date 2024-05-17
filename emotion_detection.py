@@ -12,7 +12,7 @@ def emotion_detector(text_to_analyse: str):
     return response.text
 
 
-def format_output(response):
+def emotion_predictor(response):
     json_res = loads(response)
     emotions = json_res["emotionPredictions"][0]["emotion"]
 
@@ -22,11 +22,12 @@ def format_output(response):
         if score == max(emotions.values())
     )
 
-    return highest_emotion[0]
+    emotions["dominant_emotion"] = highest_emotion[0]
+    return emotions
 
 
 if __name__ == "__main__":
-    text = "I'm confusing in this world!"
+    text = "I am so happy I am doing this."
 
     result = emotion_detector(text)
-    print(format_output(result))
+    print(emotion_predictor(result))
