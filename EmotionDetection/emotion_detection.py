@@ -1,5 +1,5 @@
 import requests
-from json import loads
+from json import loads, dumps
 
 
 def emotion_detector(text_to_analyse: str):
@@ -7,9 +7,26 @@ def emotion_detector(text_to_analyse: str):
 
     headers = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
     data = {"raw_document": {"text": text_to_analyse}}
+    try:
+        response = requests.post(url=url, json=data, headers=headers)
 
-    response = requests.post(url=url, json=data, headers=headers)
-    return response.text
+        if response.status_code == 200:
+            return response.text
+        elif response.status_code == 400:
+            return dumps(
+                {
+                    "anger": None,
+                    "disgust": None,
+                    "fear": None,
+                    "joy": None,
+                    "sadness": None,
+                    "dominant_emotion": None,
+                }
+            )
+        else:
+            return dumps({"error": "Server Error"})
+    except Exception as e:
+        return dumps({"error": "Server Error"})
 
 
 def emotion_predictor(response):
