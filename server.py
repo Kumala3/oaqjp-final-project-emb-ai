@@ -20,7 +20,11 @@ def detect_emotion():
     try:
         response = emotion_detector(text_to_analyze)
         format_response = emotion_predictor(response)
-        return format_response
+
+        if format_response["dominant_emotion"] is None:
+            return jsonify({"error": "Invalid text! Please try again!."}, 400)
+
+        return format_response, 200
     except Exception as e:
         return jsonify({"error": "Server Error"}, 500)
 
