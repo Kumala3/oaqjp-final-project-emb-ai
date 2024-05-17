@@ -15,7 +15,7 @@ def detect_emotion():
     text_to_analyze = str(request.args.get("textToAnalyze"))
 
     if not text_to_analyze:
-        return jsonify({"error": "Text is required parameter"}, 422)
+        return jsonify("Invalid text! Please try again!"), 422
 
     try:
         response = emotion_detector(text_to_analyze)
